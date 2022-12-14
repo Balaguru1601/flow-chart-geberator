@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialNodeState = {
 	initial: true,
 	nodeList: [],
+	selected: null,
 };
 
 // id: "",
@@ -41,22 +42,29 @@ const NodeSlice = createSlice({
 			return {
 				nodeList: [...state.nodeList, action.payload],
 				initial: false,
+				selected: null,
 			};
 		},
 
 		removeNode(state, action) {
 			const newNodes = state.nodeList.filter(
-				(node) => node.key !== action.payload
+				(node) => node.id !== action.payload
 			);
-			const initial = nodeList.length === 0;
-			return { nodeList: [...newNodes], initial };
+			const initial = newNodes.length === 0;
+			return { nodeList: [...newNodes], initial, selected: null };
 		},
 
 		changeType(state, action) {
 			const changeNodes = state.nodeList.map((node) =>
-				node.id === action.payload ? { ...node, type: "default" } : node
+				node.id === action.payload.id
+					? { ...node, type: action.payload.type }
+					: node
 			);
-			return { nodeList: [...changeNodes], initial: state.initial };
+			return {
+				nodeList: [...changeNodes],
+				initial: state.initial,
+				selected: null,
+			};
 		},
 	},
 });
