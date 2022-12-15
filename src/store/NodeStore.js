@@ -66,6 +66,18 @@ const NodeSlice = createSlice({
 				selected: null,
 			};
 		},
+
+		updateSelectedNode(state, { payload }) {
+			if (payload.type === "add") {
+				console.log(payload);
+				const selectedNode = state.nodeList.find(
+					(node) => node.id === payload.id
+				);
+				return { ...state, selected: selectedNode };
+			}
+
+			return { ...state, selected: null };
+		},
 	},
 });
 
